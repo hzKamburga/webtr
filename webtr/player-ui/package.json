@@ -1,7 +1,6 @@
 {
-    "name": "player-ui",
-    "version": "1.0.0",
-    "type": "style",
-    "description": "Modern video player skins for WebTR",
-    "main": "index.trs"
+    "name": "@webtr/player-ui",
+    "version": "2.0.0",
+    "description": "Default UI Theme for WebTR Player",
+    "style": "index.trs"
 }

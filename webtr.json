@@ -1,0 +1,11 @@
+{
+  "packages": {
+    "webtr/glass": {
+      "version": "HEAD",
+      "type": "style",
+      "source": "github:hzKamburga/webtr",
+      "path": "webtr/glass",
+      "installedAt": "2026-02-06T20:32:18.161Z"
+    }
+  }
+}

@@ -1,7 +1,6 @@
 {
-    "name": "player",
-    "version": "1.0.0",
-    "type": "lib",
-    "description": "WebTR video player logic",
-    "main": "index.js"
+    "name": "@webtr/player",
+    "version": "2.0.0",
+    "description": "Headless Video Player Logic for WebTR",
+    "main": "player.js"
 }

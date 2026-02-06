@@ -1,7 +1,6 @@
 {
-    "name": "ui",
+    "name": "@webtr/ui",
     "version": "1.0.0",
-    "type": "style",
-    "description": "Essential UI components for WebTR",
-    "main": "index.trs"
+    "description": "Base UI Kit for WebTR",
+    "style": "index.trs"
 }
