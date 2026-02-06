@@ -1,0 +1,60 @@
+// WebTR UI Kit
+// Temel ve modern stiller
+
+$ui-primary = #3b82f6
+$ui-secondary = #64748b
+$ui-success = #22c55e
+$ui-danger = #ef4444
+$ui-radius = 8px
+
+.btn {
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  padding: 0.5rem 1rem
+  border-radius: $ui-radius
+  border: 1px solid transparent
+  font-weight: 500
+  cursor: pointer
+  transition: all 0.2s
+  font-family: inherit
+}
+
+.btn:active {
+  transform: translateY(1px)
+}
+
+.btn-primary {
+  background-color: $ui-primary
+  color: white
+}
+
+.btn-primary:hover {
+  filter: brightness(110%)
+}
+
+.btn-outline {
+  background-color: transparent
+  border-color: currentColor
+}
+
+.card {
+  background: white
+  border-radius: $ui-radius
+  padding: 1.5rem
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1)
+}
+
+.input {
+  display: block
+  width: 100%
+  padding: 0.5rem
+  border-radius: $ui-radius
+  border: 1px solid #cbd5e1
+  background: white
+}
+
+.input:focus {
+  outline: 2px solid $ui-primary
+  border-color: transparent
+}

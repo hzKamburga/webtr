@@ -1,0 +1,7 @@
+{
+    "name": "player-ui",
+    "version": "1.0.0",
+    "type": "style",
+    "description": "Modern video player skins for WebTR",
+    "main": "index.trs"
+}
