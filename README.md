@@ -310,4 +310,76 @@ view {
 *Note: You must install `webtr:ui` or `webtr:layout` for the styles to appear.*
 
 ---
+
+## 11. 🧩 User Components (Zero-Import)
+
+The true power of WebTR: **Just create a file, and use it as a tag.**
+No `import` statements required.
+
+**1. Create a Component**
+File: `src/components/Navbar.webtr`
+```webtr
+view {
+  nav.navbar {
+    h1 { "My Brand" }
+  }
+}
+```
+
+**2. Use it Anywhere**
+File: `src/index.webtr`
+```webtr
+view {
+  Container {
+    Navbar {}  // Automatically finds Navbar.webtr and injects it!
+    
+    HeroSection {}
+    Footer {}
+  }
+}
+```
+
+WebTR automatically looks for components in:
+*   Same directory
+*   `src/components/` folder
+
+---
+
+## 12. 🌐 Router System (SPA Navigation)
+
+WebTR treats your app as a Single Page Application (SPA).
+You can define routes directly in your `.webtr` files.
+
+**Basic Routing:**
+
+```webtr
+view {
+  Container {
+    Navbar {
+      Link to="/" { "Home" }
+      Link to="/about" { "About" }
+    }
+
+    Router {
+      Route path="/" {
+        HomePage {} // Import component
+      }
+      
+      Route path="/about" {
+        AboutPage {} // Import component
+      }
+      
+      Route path="/settings" {
+        h1 { "Settings" }
+      }
+    }
+  }
+}
+```
+
+*   `Link { to="..." }`: Navigates without page reload.
+*   `Router {}`: Container for routes.
+*   `Route { path="..." }`: Shows content only when URL matches.
+
+---
 **WebTR Framework** - *Built by Intelligence, For Intelligence.*
