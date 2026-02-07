@@ -1,7 +1,9 @@
 {
     "name": "@webtr/env",
-    "version": "1.0.0",
-    "description": "Simple .env file loader for WebTR",
-    "main": "env.js",
-    "type": "module"
+    "version": "1.0.1",
+    "description": "Simple .env file loader for WebTR (Server-Side Only)",
+    "main": "env.weblib",
+    "type": "module",
+    "author": "WebTR Team",
+    "license": "MIT"
 }
