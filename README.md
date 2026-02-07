@@ -266,4 +266,48 @@ Push to GitHub. Users install via `webtr add style <user>/<pkg>`.
     *   Logic: `await import('/packages/webtr/package/file.weblib')`
 
 ---
+
+## 10. 🧱 Built-in Component Macros (Zero HTML)
+
+To help you build apps without writing raw HTML/CSS, WebTR provides **Component Macros**.
+These are special capitalized tags that automatically expand to standard structures.
+
+### Layout Macros
+*   `Container {}`  → `<div class="container">`
+*   `Row { center }` → `<div class="row center">`
+*   `Col { span="6" }` → `<div class="col col-6">`
+
+### UI Macros
+*   `Card { title="..." }` → `<div class="card">`
+*   `Button { variant="primary" }` → `<button class="btn btn-primary">`
+*   `Input {}` → `<input class="input">`
+*   `Navbar {}` → `<nav class="navbar">`
+*   `Title { size="1" }` → `<h1>`
+*   `Text {}` → `<p>`
+
+**Example Usage:**
+
+```webtr
+view {
+  Container {
+    Navbar {
+      Title size="3" { "My App" }
+    }
+
+    Row {
+      Col span="6" {
+        Card {
+          Title { "Hello" }
+          Text { "This is a No-Code style component." }
+          Button @click="action" variant="primary" { "Click Me" }
+        }
+      }
+    }
+  }
+}
+```
+
+*Note: You must install `webtr:ui` or `webtr:layout` for the styles to appear.*
+
+---
 **WebTR Framework** - *Built by Intelligence, For Intelligence.*
