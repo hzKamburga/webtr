@@ -1,0 +1,8 @@
+{
+    "name": "@webtr/validation",
+    "version": "1.0.0",
+    "description": "WebTR Form ve Veri Doğrulama Kütüphanesi",
+    "main": "validation.js",
+    "author": "WebTR Team",
+    "license": "MIT"
+}

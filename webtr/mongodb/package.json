@@ -1,0 +1,7 @@
+{
+    "name": "@webtr/mongodb",
+    "version": "1.0.0",
+    "description": "MongoDB Wrapper for WebTR",
+    "main": "mongodb.weblib",
+    "type": "module"
+}

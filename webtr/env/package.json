@@ -1,0 +1,7 @@
+{
+    "name": "@webtr/env",
+    "version": "1.0.0",
+    "description": "Simple .env file loader for WebTR",
+    "main": "env.js",
+    "type": "module"
+}

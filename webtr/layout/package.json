@@ -1,0 +1,8 @@
+{
+    "name": "@webtr/layout",
+    "version": "1.0.0",
+    "description": "WebTR Hızlı Dizilim ve Boşluk Sistemi",
+    "main": "index.trs",
+    "author": "WebTR Team",
+    "license": "MIT"
+}

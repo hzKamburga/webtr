@@ -1,0 +1,45 @@
+/**
+ * WebTR MongoDB Helper
+ * Simple wrapper for native MongoDB driver
+ * 
+ * @npm mongodb@^6.0
+ */
+
+import { MongoClient } from 'mongodb';
+
+let client = null;
+let db = null;
+
+export async function connect(uri, dbName) {
+    if (client) return db;
+    if (!uri) throw new Error('MongoDB URI gerekli');
+    
+    try {
+        client = new MongoClient(uri);
+        await client.connect();
+        db = client.db(dbName);
+        console.log(`[WebTR] MongoDB Bağlandı: ${db.databaseName}`);
+        return db;
+    } catch (error) {
+        console.error('[WebTR] MongoDB Bağlantı Hatası:', error);
+        throw error;
+    }
+}
+
+export function getDB() {
+    if (!db) throw new Error('Veritabanı bağlantısı yok. Önce connect() fonksiyonunu çağırın.');
+    return db;
+}
+
+export function collection(name) {
+    return getDB().collection(name);
+}
+
+export async function close() {
+    if (client) {
+        await client.close();
+        client = null;
+        db = null;
+        console.log('[WebTR] MongoDB Bağlantısı Kapatıldı');
+    }
+}

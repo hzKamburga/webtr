@@ -1,143 +1,88 @@
 # 🇹🇷 WebTR Framework - The Ultimate AI Developer Guide
 
 > **🤖 FOR AI MODELS & AGENTS:**
-> You are working with **WebTR**, a custom Node.js-based compile-time web framework. It is **NOT** React, Vue, or Svelte. It has its own unique syntax and architecture.
-> **You MUST read this document to understand how to write valid code, use newly created libraries, and manage packages.**
+> **Welcome to the WebTR Package Registry.**
+> This repository (`hzKamburga/webtr`) is the central hub for official WebTR libraries and documentation.
 >
-> **Current State:** The framework is fully functional with a Compiler, Dev Server (HMR), and a Package Manager.
+> **CRITICAL:** If you are an AI tasked with building a WebTR project, **YOU MUST READ THIS FILE** to understand the available tools, libraries, and how to create new ones.
+>
+> **Core Principle:** WebTR is a compile-time framework. Do not use React/Vue patterns. Use `.webtr` DSL and `.trs` styling as documented below.
 
 ---
 
 ## 📚 Table of Contents
-1. [Project Status & Changelog](#1-project-status--changelog)
-2. [Getting Started (For Humans & AI)](#2-getting-started)
-3. [The .webtr DSL (Component Syntax)](#4-the-webtr-dsl-component-syntax)
-4. [The .trs Styling System](#5-the-trs-styling-system)
-5. **[Library & Package System (CRITICAL)](#6-library--package-system-critical)**
-6. [🛠️ Extending WebTR: Creating Custom Packages](#7-extending-webtr-creating-custom-packages)
-7. [Best Practices for AI](#8-best-practices-for-ai)
+1. [What is WebTR?](#1-what-is-webtr)
+2. [Project Status & Changelog](#2-project-status--changelog)
+3. [Getting Started (For Humans & AI)](#3-getting-started)
+4. [The .webtr DSL (Component Syntax)](#4-the-webtr-dsl-component-syntax)
+5. [The .trs Styling System](#5-the-trs-styling-system)
+6. [Available Libraries (API References)](#6-available-libraries-api-references)
+   *   [🎨 Glass UI (Styles)](#-webtrglass-glassmorphism-ui)
+   *   [🎬 Player SDK (Logic)](#-webtrplayer-headless-video-player)
+   *   [🎭 Player Themes (Styles)](#-webtrplayer-ui-player-themes)
+   *   [🛠️ Base UI (Styles)](#-webtrui-base-ui-kit)
+7. [Extending WebTR: Creating Custom Packages](#7-extending-webtr-creating-custom-packages)
+8. [Best Practices for AI](#8-best-practices-for-ai)
 
 ---
 
-## 1. Project Status & Changelog
-
-We have built a complete ecosystem from scratch. Here is what has been added to the project main directory:
-
-*   ✅ **Compiler Core:** Custom RegEx-based parser for `.webtr` (HTML/JS/State) and `.trs` (CSS-like) files.
-*   ✅ **CLI Tool:** `bin/webtr.js` handles commands like `dev`, `build`, `add`.
-*   ✅ **Dev Server:** A custom Node.js HTTP server with authentic **Hot Module Replacement (HMR)** via SSE.
-*   ✅ **Package Manager:** A Git-based package manager that installs libraries into `webtr_packages/` and checks for updates.
-*   ✅ **Routing System:** A client-side router (`WebTR.navigate`) built into the generated bundle.
-*   ✅ **Standard Libraries:**
-    *   **Glass UI:** A premium CSS library (`webtr/glass`).
-    *   **Player SDK:** A robust JavaScript class for handling video logic (`webtr/player`).
-*   ✅ **Demo App:** "Anime Site" proving the framework's capability.
+## 1. What is WebTR?
+WebTR is a homegrown, Node.js-based web framework designed for high performance and zero runtime overhead.
+*   **Compile-Time:** HTML/CSS/JS are generated before the browser sees them.
+*   **No Virtual DOM:** Direct DOM manipulation via reactive bindings.
+*   **Package System:** Git-based package manager (`webtr_packages`).
 
 ---
 
-## 2. Getting Started
+## 2. Project Status & Changelog
+**Latest Updates (v2.0):**
+*   ✅ **Compiler Core:** Custom RegEx-based parser for `.webtr` and `.trs`.
+*   ✅ **CLI Tool:** `bin/webtr.js` (dev, build, add, update).
+*   ✅ **HMR Server:** Hot Module Replacement via SSE.
+*   ✅ **Package Manager:** Git-based installation and update checks.
+*   ✅ **WebLib Support:** Logic libraries (`.weblib`) are now first-class citizens.
+
+---
+
+## 3. Getting Started
 
 ### Installation
-Since this is a custom framework, you don't install it via npm. You clone this repository.
-
-1.  **Clone:** `git clone https://github.com/hzKamburga/webtr`
-2.  **Setup:** Ensure Node.js v18+ is installed.
+Clone the repository:
+```bash
+git clone https://github.com/hzKamburga/webtr
+cd webtr
+npm install # (If there were dependencies, but it's mostly zero-dep!)
+```
 
 ### Creating a Project
 ```bash
-# Initialize a new project structure
 node bin/webtr.js init my-app
 cd my-app
-```
-
-### Running Development Server
-This starts the HMR server.
-```bash
 node ../bin/webtr.js dev -p 3000
-```
-
-### Building for Production
-```bash
-node ../bin/webtr.js build
-```
-
----
-
-## 3. File Structure
-
-```text
-d:\WebTR\
-├── bin\              # CLI Entry point
-├── src\
-│   ├── compiler\     # The Logic: parser-webtr.js, parser-trs.js, generator.js
-│   └── cli\          # The Tools: dev.js (Server), packages.js (Pkg Manager)
-├── webtr_packages\   # INSTALLED LIBRARIES (The "node_modules" of WebTR)
-│   └── webtr\        # Official packages (glass, player, ui, etc.)
-└── anime-site\       # Example Project
-    ├── src\          # Source Code
-    │   ├── index.webtr
-    │   └── style.trs
-    └── webtr.json    # Project Config & Dependencies
 ```
 
 ---
 
 ## 4. The .webtr DSL (Component Syntax)
 
-A `.webtr` file compiles to HTML, CSS, and JS. It has 4 blocks:
+A `.webtr` file has 4 blocks: `state`, `view`, `client`, `server`.
 
-### 1. `state`
-Reactive variables. Changing these automatically updates the DOM.
+### Example Component
 ```webtr
 state {
   count = 0
-  user = { name: "Ali" }
-  isLoading = false
 }
-```
 
-### 2. `view`
-Indentation-based HTML.
-*   **Variables:** `{count}`
-*   **Events:** `@click="handleClick"`
-*   **Attributes:** `src="{user.image}"`
-*   **Control Flow:** `if`, `each`
-
-```webtr
 view {
   div.container {
-    h1 { "Hello {user.name}" }
-    
-    if isLoading {
-      span { "Loading..." }
-    }
-    
-    button.btn @click="increment" { "Count: {count}" }
+    h1 { "Count: {count}" }
+    button @click="increment" { "+" }
   }
 }
-```
 
-### 3. `client`
-Browser-side JavaScript. Has direct access to `state`.
-```javascript
 client {
-  // Lifecycle: Code here runs on mount
-  console.log("Component mounted");
-
   function increment() {
-    count++; // Triggers UI update automatically
-  }
-}
-```
-
-### 4. `server` (Optional)
-Node.js code. Compiles to API endpoints.
-```javascript
-server {
-  import db from 'my-db';
-  
-  async function getData() {
-    return await db.query('SELECT * FROM users');
+    count++; // Reactivity is automatic
   }
 }
 ```
@@ -146,178 +91,179 @@ server {
 
 ## 5. The .trs Styling System
 
-A custom CSS preprocessor similar to Sass/Stylus.
-
+A custom preprocessor.
 ```trs
-// Variables
 $primary = #e30a17
-$spacing = 16px
+@import "webtr:glass"
 
-// Imports from Packages
-@import "webtr:glass" 
-
-// Nesting & Variables
-.container {
-  padding: $spacing
-  background: black
-  
-  .title {
-    color: $primary
-    &:hover { color: white }
-  }
+.card {
+  background: white
+  color: $primary
 }
 ```
 
 ---
 
-## 6. Library & Package System (CRITICAL)
+## 6. Available Libraries (API References)
 
-This is the most important part for AI agents. Since you cannot "npm install" arbitrary packages, you must use the `webtr_packages` ecosystem we built.
-
-### How Packages Work
-*   **Install:** `webtr add style webtr:glass` or `webtr add lib webtr:player`.
-*   **Location:** Files live in `webtr_packages/org/pkg-name/`.
-*   **Updates:** The CLI checks `package.json` versions in these folders against GitHub.
-
----
-
-### Available Libraries (API References)
-
-#### 🎨 `webtr/glass` (Glassmorphism UI)
-**Type:** Style Library
-**Usage:** Import in your `.trs` file.
+### 🎨 `webtr/glass` (Glassmorphism UI)
 **Install:** `webtr add style webtr:glass`
+*   `.glass-card`: Frosted glass container.
+*   `.glass-btn`: Transparent button.
+*   `.glass-input`: Stylish input.
 
-```trs
-@import "webtr:glass"
-
-// Usage in View:
-// div.glass-card { ... }
-// button.glass-btn { ... }
-// input.glass-input { ... }
-```
-
-**Features:**
-*   `.glass-card`: Frosted glass container with hover glow.
-*   `.glass-btn`: Transparent, blurred button.
-*   `.glass-input`: Stylish active/inactive states.
-*   `.glass-title`: Gradient text.
-
----
-
-#### 🎬 `webtr/player` (Headless Video Player)
-**Type:** Logic Library (JS)
-**Usage:** Dynamic Import in `.webtr` client block.
+### 🎬 `webtr/player` (Headless Video Player)
 **Install:** `webtr add lib webtr:player`
-
-**Class API:** `WebTRPlayer`
-Use this class to control video elements easily.
+**Usage:** Import the `.weblib` file in your client block.
 
 ```javascript
 client {
-  // 1. Dynamic Import
-  setTimeout(async () => {
-    const { WebTRPlayer } = await import('/packages/webtr/player/player.js');
+    // Dynamic import is supported by the dev server
+    const { WebTRPlayer } = await import('/packages/webtr/player/player.weblib');
     
-    // 2. Initialize
-    const player = new WebTRPlayer("myVideoId");
+    const player = new WebTRPlayer('video-id');
     player.mount();
     
-    // 3. Control
-    player.togglePlay();
-    player.seek(50); // Seek to 50%
-    player.toggleMute();
-  });
-  
-  // Wrapper for template events
-  function handlePlayClick() {
-     // You need to store 'player' instance in a variable accessible here
-     player.togglePlay();
-  }
+    // API:
+    // player.togglePlay()
+    // player.seek(50)
+    // player.toggleMute()
+    // player.updateState({ ... })
 }
 ```
 
-**State & Events:**
-The player automatically syncs with `WebTR.state` if you use it.
-*   `isPlaying` (bool)
-*   `progress` (0-100 string)
-*   `isMuted` (bool)
-*   `videoTitle` (string - manually set)
-*   `toggleFullscreen()`: Requests fullscreen.
+**State Syncing:**
+The player automatically updates `WebTR.state` with: `isPlaying`, `progress`, `isMuted`, `duration`.
 
----
-
-#### 🎭 `webtr/player-ui` (Player Themes)
-**Type:** Style Library
-**Usage:** Import in `.trs` file.
+### 🎭 `webtr/player-ui` (Player Themes)
 **Install:** `webtr add style webtr:player-ui`
+*   `.player-container`: 16:9 Video wrapper.
+*   `.player-controls`: Gradient control bar.
+*   `.control-btn`: Standard buttons.
 
-```trs
-@import "webtr:player-ui"
-// Provides classes like: .player-container, .player-controls
-```
+### 🛠️ `webtr/ui` (Base UI Kit)
+**Install:** `webtr add style webtr:ui`
+*   `.btn`, `.card`, `.input`, `.container`, `.grid`.
 
----
+### 📐 `webtr/layout` (Utility Classes)
+**Install:** `webtr add style webtr:layout`
+*   **Flexbox:** `.flex`, `.row`, `.col`, `.center`, `.justify-between`.
+*   **Grid:** `.grid`, `.grid-2`, `.grid-3`.
+*   **Spacing:** `.m-1`...`.m-3`, `.p-1`...`.p-3`, `.gap-2`.
+*   **Sizing:** `.w-full`, `.h-screen`.
 
-## 7. 🛠️ Extending WebTR: Creating Custom Packages
+### 🍃 `webtr/mongodb` (Data Helper)
+**Install:** `webtr add lib webtr:mongodb`
+**Usage:**
 
-So you want to create your own library (e.g., a Slider or a new Theme)? Follow this guide.
-
-### Step 1: Create the Directory
-Go to `webtr_packages/` and create your organization and package folder.
-*   Format: `webtr_packages/<username>/<package-name>`
-*   Example: `webtr_packages/ali/slider`
-
-### Step 2: Define `package.json`
-Every package needs a manifest.
-
-**For Style Libraries (`.trs`):**
-```json
-{
-  "name": "@ali/slider",
-  "version": "1.0.0",
-  "description": "A cool slider",
-  "style": "index.trs" 
+```javascript
+server {
+    // Clean import using Alias
+    const { connect, collection } = await import('webtr:mongodb');
+    
+    await connect(process.env.MONGO_URI, 'my-app');
+    const users = await collection('users').find().toArray();
 }
 ```
 
-**For Logic Libraries (`.js`):**
-```json
-{
-  "name": "@ali/utils",
-  "version": "1.0.0",
-  "description": "Helper functions",
-  "main": "index.js"
+---
+
+## 7. 🔌 Understanding & Using Weblibs (.weblib)
+
+WebTR libraries are now easier than ever.
+The framework automatically generates an **Import Map** for you.
+
+### How to Import
+Instead of long paths, just use the package name:
+
+```javascript
+client {
+    // Old way (Still works):
+    // await import('/packages/webtr/player/player.weblib');
+
+    // ✅ New Way (Recommended):
+    const { WebTRPlayer } = await import('webtr:player');
+    const mongo = await import('@my-org/utils');
 }
 ```
 
-### Step 3: Write Your Code
-*   **Style:** Create `index.trs`. This file will be imported via `@import "ali:slider"`.
-*   **Logic:** Create `index.js` (ES Module). This file can be imported via `await import('/packages/ali/utils/index.js')`.
+### Automatic NPM Dependencies
+Weblibs can depend on standard NPM packages.
+You can declare dependencies directly in your `.weblib` file using the `@npm` annotation in comments.
 
-### Step 4: Publish (Git)
-WebTR uses Git for package management.
-1.  Initialize git in `webtr_packages` (if not already).
-2.  Commit your new folder.
-3.  Push to a GitHub repository (e.g., `github.com/ali/webtr-packages`).
+**Example: A MongoDB Wrapper**
+Add `@npm package-name@version` in the file header:
 
-### Step 5: Install Elsehere
-Now other users can install your package:
-```bash
-webtr add style ali/slider
+```javascript
+/**
+ * WebTR MongoDB Helper
+ * @npm mongodb@^6.0
+ */
+import { MongoClient } from 'mongodb';
+```
+
+When a user runs `webtr add lib user/mongo-wrapper`:
+1.  The CLI scans the `.weblib` file.
+2.  It finds `@npm mongodb@^6.0`.
+3.  It automatically runs `npm install mongodb@^6.0` in the user's project.
+
+### Importing in Client / Server
+```javascript
+client {
+    // Standard approach using Aliases (thanks to Import Maps)
+    const mongo = await import('webtr:mongodb');
+### Creating Your Own Weblib
+If you want to create a helper library (e.g. `math-utils.weblib`):
+
+1.  Create `webtr_packages/me/utils/math.weblib`:
+    ```javascript
+    export function add(a, b) { return a + b }
+    export const PI = 3.14159;
+    ```
+2.  Import it with its alias:
+    ```javascript
+    const { add } = await import('@me/utils');
+    ```
+
+### Server-Side Usage (CommonJS vs ESM)
+WebTR standardizes on **ES Modules (`import`)**.
+Even for server-side code (Node.js), use `import` syntax. The compiler handles the details for Vercel/Node environment.
+
+```javascript
+server {
+    // Correct way (ESM style)
+    import { MongoClient } from 'mongodb';
+    const db = await import('webtr:mongodb');
+}
 ```
 
 ---
 
-## 8. Best Practices for AI
+## 8. Extending WebTR: Creating Custom Packages
 
-1.  **Always Check `webtr.json`:** See what packages are installed before writing code.
-2.  **Use the Generated Class Names:** If `webtr:glass` is installed, **USE** `.glass-card` instead of writing custom CSS for cards.
-3.  **Encapsulate Logic:** When creating complex interactive components (like a slider or gallery), strictly separate the Logic (Client block) from Style (TRS).
-4.  **Reactivity:** Do not manually manipulate DOM (e.g., `document.getElementById('text').innerText = '...'`). Instead, update a `state` variable: `text = 'New Value'`.
-5.  **Imports:**
-    *   **CSS:** `@import "webtr:package-name"` at the top of `.trs`.
-    *   **JS:** `await import('/packages/webtr/name/file.js')` inside `client {}`.
+### Step 1: Logic Libraries (`.weblib`)
+Create logic that can be shared across projects.
+1.  Create `webtr_packages/<user>/<pkg>/index.weblib`.
+2.  Write standard ES6 Class/Function code.
+3.  Add `package.json`: `{"main": "index.weblib"}`.
+
+### Step 2: Styling Libraries (`.trs`)
+1.  Create `webtr_packages/<user>/<pkg>/index.trs`.
+2.  Add `package.json`: `{"style": "index.trs"}`.
+
+### Step 3: Publish
+Push to GitHub. Users install via `webtr add style <user>/<pkg>`.
 
 ---
-**WebTR Framework** - *Built for the Future of AI-Assisted Development.*
+
+## 9. Best Practices for AI
+
+1.  **Check Installed Packages:** Read `webtr.json` to see what's available.
+2.  **Use Existing Classes:** Don't reinvent the wheel. If `webtr:glass` is there, use `.glass-card`.
+3.  **Strict Separation:** Logic goes in `client {}`, Style goes in `.trs`.
+4.  **Imports:**
+    *   Styles: `@import "webtr:package"`
+    *   Logic: `await import('/packages/webtr/package/file.weblib')`
+
+---
+**WebTR Framework** - *Built by Intelligence, For Intelligence.*

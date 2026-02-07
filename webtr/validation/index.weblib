@@ -1,0 +1,51 @@
+/**
+ * WebTR Validation Logic
+ * Kullanıcı girişlerini doğrulamak için yardımcı fonksiyonlar
+ */
+
+export const validate = {
+    // Zorunlu alan kontrolü
+    required: (value) => {
+        if (value === null || value === undefined) return false;
+        if (typeof value === 'string') return value.trim().length > 0;
+        return true;
+    },
+
+    // Email formatı kontrolü
+    email: (value) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(value).toLowerCase());
+    },
+
+    // Minimum uzunluk
+    minLength: (value, min) => {
+        return String(value).length >= min;
+    },
+
+    // Maksimum uzunluk
+    maxLength: (value, max) => {
+        return String(value).length <= max;
+    },
+
+    // Sadece sayı kontrolü
+    numeric: (value) => {
+        return !isNaN(parseFloat(value)) && isFinite(value);
+    },
+
+    // URL kontrolü
+    url: (value) => {
+        try {
+            new URL(value);
+            return true;
+        } catch (_) {
+            return false;
+        }
+    }
+};
+
+// Kolay kullanım için tekil exportlar
+export const isEmail = validate.email;
+export const isRequired = validate.required;
+export const isNumeric = validate.numeric;
+
+export default validate;
